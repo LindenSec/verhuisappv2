@@ -4,7 +4,7 @@ Een handige interactieve app om je verhuizing te organiseren en kosten bij te ho
 
 **Live demo:** [https://lindensec.github.io/verhuischecklist/](https://lindensec.github.io/verhuischecklist/)
 
-![Verhuischecklist Screenshot](https://imgur.com/vgNoWSX)
+![Verhuischecklist Screenshot](Demo.png)
 
 ## ✨ Functies
 
