@@ -121,7 +121,7 @@
 
   <script type="text/babel">
     // Destructuring React hooks
-    const { useState, useEffect, useRef, useCallback } = React;
+    const { useState, useEffect, useRef } = React;
 
     // Basisstructuur voor categorieën, inclusief IKEA-integratie optie
     const categoryStructure = {
@@ -265,13 +265,6 @@
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <line x1="12" y1="19" x2="12" y2="5"></line>
         <polyline points="5 12 12 5 19 12"></polyline>
-      </svg>
-    );
-
-    const SettingsIcon = ({size = 18}) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="3"></circle>
-        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
       </svg>
     );
 
@@ -556,23 +549,21 @@
         // Update categorienaam in items
         if (newName !== editingCategory) {
           setItems(items.map(item => 
-            item.category === editingCategory ? { ...item, category: newName } : item
-          ));
+            item.category === editingCategory ? { ...item, category: newName } : item));
         }
 
         // Update categorie-instellingen
         const updatedSettings = {...categorySettings};
         
-        // Verwijder oude sleutel
+        // Verwijder oude sleutel als naam is veranderd
         if (newName !== editingCategory) {
-          const { [editingCategory]: _, ...rest } = updatedSettings;
+          delete updatedSettings[editingCategory];
           updatedSettings[newName] = { showIkea };
-          setCategorySettings(rest);
         } else {
           updatedSettings[editingCategory] = { showIkea };
-          setCategorySettings(updatedSettings);
         }
-
+        
+        setCategorySettings(updatedSettings);
         setShowEditCategoryForm(false);
         setEditingCategory(null);
       };
