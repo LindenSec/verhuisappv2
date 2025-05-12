@@ -142,3 +142,17 @@
 .edit-highlight:hover:after {
   transform: scaleX(1);
 }
+
+.category-manager {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin-bottom 0.3s ease-out;
+  opacity: 0;
+  margin-bottom: 0;
+}
+
+.category-manager.open {
+  max-height: 500px; /* Een waarde die groot genoeg is voor je content */
+  opacity: 1;
+  margin-bottom: 1.5rem; /* 6px, gelijk aan mb-6 in Tailwind */
+}
