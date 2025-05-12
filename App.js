@@ -19,6 +19,7 @@ const App = () => {
   const [editingCategory, setEditingCategory] = useState(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [showCategoryManager, setShowCategoryManager] = useState(false);
 
   // Refs
   const costInputRef = useRef(null);
@@ -306,44 +307,44 @@ const App = () => {
     return categorySettings[category]?.showIkea ?? true;
   };
   
-  // Zoektermen genereren voor IKEA
-const getSearchTerms = (item) => {
-  // Woorden extraheren uit de itemnaam
-  const words = item.name.split(/[\s\(\)]+/);
-  
-  // Bepaalde woorden uitsluiten
-  const excludedWords = ['voor', 'met', 'en', 'of', 'andere', 'evt.', 'etc.', 'kleine', 'grote'];
-  
-  // Woorden filteren
-  let searchTerms = words.filter(word => 
-    word.length > 2 && 
-    !excludedWords.includes(word.toLowerCase())
-  );
+  // Zoektermen genereren voor IKEA - Verbeterde versie die bug oplost
+  const getSearchTerms = (item) => {
+    // Woorden extraheren uit de itemnaam
+    const words = item.name.split(/[\s\(\)]+/);
+    
+    // Bepaalde woorden uitsluiten
+    const excludedWords = ['voor', 'met', 'en', 'of', 'andere', 'evt.', 'etc.', 'kleine', 'grote'];
+    
+    // Woorden filteren
+    let searchTerms = words.filter(word => 
+      word.length > 2 && 
+      !excludedWords.includes(word.toLowerCase())
+    );
 
-  // Als er woorden in de itemnaam gevonden zijn, gebruik dan alleen die woorden
-  // zonder categorie-specifieke termen toe te voegen
-  if (searchTerms.length > 0) {
-    return searchTerms.slice(0, 3).join(' ');
-  }
-  
-  // Alleen als er geen bruikbare woorden in de itemnaam zijn, terugvallen op categorie-specifieke termen
-  // Categorie-specifieke termen
-  const categoryTerms = {
-    "Woonkamer": ["kast", "bank", "tafel", "gordijn"],
-    "Keuken": ["keuken", "bestek", "pan", "opberg"],
-    "Badkamer": ["badkamer", "handdoek", "douche"],
-    "Slaapkamer": ["bed", "matras", "kussen", "kast"],
-    "Werk-/Gamehoek": ["bureau", "stoel", "kabel", "lamp"],
+    // Als er woorden in de itemnaam gevonden zijn, gebruik dan alleen die woorden
+    // zonder categorie-specifieke termen toe te voegen
+    if (searchTerms.length > 0) {
+      return searchTerms.slice(0, 3).join(' ');
+    }
+    
+    // Alleen als er geen bruikbare woorden in de itemnaam zijn, terugvallen op categorie-specifieke termen
+    // Categorie-specifieke termen
+    const categoryTerms = {
+      "Woonkamer": ["kast", "bank", "tafel", "gordijn"],
+      "Keuken": ["keuken", "bestek", "pan", "opberg"],
+      "Badkamer": ["badkamer", "handdoek", "douche"],
+      "Slaapkamer": ["bed", "matras", "kussen", "kast"],
+      "Werk-/Gamehoek": ["bureau", "stoel", "kabel", "lamp"],
+    };
+    
+    // Als er geen bruikbare termen zijn in de itemnaam, gebruik dan categorie-specifieke termen
+    if (categoryTerms[item.category]) {
+      return categoryTerms[item.category].slice(0, 2).join(' ');
+    }
+    
+    // Terugvallen op categorie als er geen termen zijn
+    return item.category;
   };
-  
-  // Als er geen bruikbare termen zijn in de itemnaam, gebruik dan categorie-specifieke termen
-  if (categoryTerms[item.category]) {
-    return categoryTerms[item.category].slice(0, 2).join(' ');
-  }
-  
-  // Terugvallen op categorie als er geen termen zijn
-  return item.category;
-};
   
   // Scroll naar boven
   const scrollToTop = () => {
@@ -357,6 +358,16 @@ const getSearchTerms = (item) => {
       localStorage.removeItem('verhuisItems');
     }
   };
+  
+  // Categoriebeheer icoon
+  const CategoryIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"></path>
+      <path d="M9 12h6"></path>
+      <path d="M9 16h6"></path>
+      <path d="M9 8h6"></path>
+    </svg>
+  );
   
   return (
     <div className="bg-gray-100 min-h-screen pb-16">
@@ -404,39 +415,41 @@ const getSearchTerms = (item) => {
 
       {/* Hoofdinhoud */}
       <main className="max-w-md mx-auto p-4">
-        {/* Categorieën beheren sectie */}
-        <div className="bg-white p-4 rounded-lg shadow-md mb-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">Categorieën beheren</h2>
-            <button 
-              onClick={() => setShowCategoryForm(true)}
-              className="bg-green-500 text-white px-3 py-2 rounded flex items-center"
-            >
-              <span className="mr-1">+</span> Nieuwe categorie
-            </button>
-          </div>
-          
-          <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto">
-            {getCategories().map(category => (
-              <div key={category} className="flex justify-between items-center p-2 bg-gray-100 rounded">
-                <span>{category}</span>
-                <div className="flex space-x-2">
-                  <button
-                    onClick={() => editCategory(category)}
-                    className="text-blue-500 flex items-center category-edit-button"
-                    title="Categorie bewerken"
-                  >
-                    <EditIcon size={16} /> <span className="ml-1 text-xs">Bewerken</span>
-                  </button>
-                  <button
-                    onClick={() => showSuggestionsForCategory(category)}
-                    className="text-gray-500 text-xs px-2 py-1 bg-gray-200 rounded"
-                  >
-                    Suggesties
-                  </button>
+        {/* Categorieën beheren sectie - met animatie */}
+        <div className={`category-manager ${showCategoryManager ? 'open' : ''}`}>
+          <div className="bg-white p-4 rounded-lg shadow-md">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Categorieën beheren</h2>
+              <button 
+                onClick={() => setShowCategoryForm(true)}
+                className="bg-green-500 text-white px-3 py-2 rounded flex items-center"
+              >
+                <span className="mr-1">+</span> Nieuwe categorie
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto">
+              {getCategories().map(category => (
+                <div key={category} className="flex justify-between items-center p-2 bg-gray-100 rounded">
+                  <span>{category}</span>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => editCategory(category)}
+                      className="text-blue-500 flex items-center category-edit-button"
+                      title="Categorie bewerken"
+                    >
+                      <EditIcon size={16} /> <span className="ml-1 text-xs">Bewerken</span>
+                    </button>
+                    <button
+                      onClick={() => showSuggestionsForCategory(category)}
+                      className="text-gray-500 text-xs px-2 py-1 bg-gray-200 rounded"
+                    >
+                      Suggesties
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
@@ -452,13 +465,6 @@ const getSearchTerms = (item) => {
             </button>
           </div>
         )}
-        
-        {/* Deze sectie is verwijderd:
-            <div className="mb-6">
-              <h2 className="text-lg font-semibold mb-2">Suggesties per categorie</h2>
-              ...
-            </div>
-        */}
         
         <ItemList 
           filterCategory={filterCategory}
@@ -495,6 +501,14 @@ const getSearchTerms = (item) => {
             <ArrowUpIcon />
           </button>
         )}
+        
+        <button
+          onClick={() => setShowCategoryManager(!showCategoryManager)}
+          className={`p-3 rounded-full shadow-lg ${showCategoryManager ? 'bg-blue-500' : 'secondary-button'} text-white`}
+          title={showCategoryManager ? "Sluit categoriebeheer" : "Open categoriebeheer"}
+        >
+          <CategoryIcon />
+        </button>
         
         <button
           onClick={() => setShowAddForm(true)}
