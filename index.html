@@ -468,7 +468,6 @@
         // Als er meerdere items zijn, eerste tonen en rest in wachtrij zetten
         else if (incompleteCategoryItems.length > 1) {
           setCurrentItemForCost(incompleteCategoryItems[0]);
-          [0]);
           setPendingCostItems(incompleteCategoryItems.slice(1).map(item => item.id));
         }
       };
