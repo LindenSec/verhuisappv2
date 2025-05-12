@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mijn Verhuischecklist</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- React en ReactDOM laden via CDN -->
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+  <!-- Babel voor JSX transformatie -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Data en hulpfuncties -->
+  <script src="data/initialItems.js"></script>
+  <script src="data/categoryStructure.js"></script>
+  
+  <!-- Icons en componenten -->
+  <script type="text/babel" src="components/Icons.js"></script>
+  <script type="text/babel" src="components/CategoryFilters.js"></script>
+  <script type="text/babel" src="components/ItemList.js"></script>
+  <script type="text/babel" src="components/Dialogs.js"></script>
+  
+  <!-- Hoofdapplicatie -->
+  <script type="text/babel" src="App.js"></script>
+  <script type="text/babel">
+    // App renderen
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>

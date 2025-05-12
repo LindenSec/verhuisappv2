@@ -1,0 +1,144 @@
+.hidden {
+    display: none;
+  }
+  .completed {
+    text-decoration: line-through;
+    color: #6b7280;
+  }
+  .scrollable-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollable-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  /* Custom CSS voor monochroom thema */
+  .app-header {
+    background-color: #1a1a1a;
+  }
+  .progress-bar-bg {
+    background-color: #333333;
+  }
+  .progress-bar-fill {
+    background-color: #ffffff;
+  }
+  .primary-button {
+    background-color: #333333;
+  }
+  .primary-button:hover {
+    background-color: #444444;
+  }
+  .secondary-button {
+    background-color: #666666;
+  }
+  .secondary-button:hover {
+    background-color: #777777;
+  }
+  .category-button {
+    background-color: #333333;
+  }
+  .active-category {
+    background-color: #ffffff;
+    color: #000000;
+  }
+  .cost-tag {
+    background-color: #eeeeee;
+    color: #333333;
+    font-size: 0.75rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+  }
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+  }
+  .toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+  input:checked + .toggle-slider {
+    background-color: #333333;
+  }
+  input:checked + .toggle-slider:before {
+    transform: translateX(26px);
+  }
+  .category-actions {
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .category-header:hover .category-actions {
+    opacity: 1;
+  }
+
+  /* Stijlen voor categorieën beheren sectie */
+.category-edit-button {
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.category-edit-button:hover {
+  opacity: 1;
+}
+
+/* Verbeterde animaties voor dialogen */
+.modal-backdrop {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Accentueer bewerk knoppen */
+.edit-highlight {
+  position: relative;
+}
+
+.edit-highlight:after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #3b82f6;
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+
+.edit-highlight:hover:after {
+  transform: scaleX(1);
+}
